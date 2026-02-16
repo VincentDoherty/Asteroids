@@ -2,6 +2,7 @@ from turtle import Screen
 import pygame
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from logger import log_state
+from player import Player
 
 
 def main():
@@ -10,9 +11,19 @@ def main():
     print(f"Starting Asteroids with pygame version: {pygame.version.ver}")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+    
+    
     clock = pygame.time.Clock()
     dt = 0 
-
+    
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    
+    
+    Player.containers = (updatable, drawable)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    
+    
     while True:
         log_state()
         
@@ -22,7 +33,15 @@ def main():
                 return
             
             
-        screen.fill("black")  # Fill screen with black color
+        #update everything    
+        updatable.update(dt)  # Update all updatable sprites
+            
+           
+        # draw everything
+        screen.fill("black")
+        for obj in drawable:
+            obj.draw(screen)
+            
         pygame.display.flip()  # Update the display
         
         
