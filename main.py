@@ -1,7 +1,8 @@
+import sys
 from turtle import Screen
 import pygame
 from constants import SCREEN_HEIGHT, SCREEN_WIDTH
-from logger import log_state
+from logger import log_state, log_event
 from player import Player
 from asteroid import Asteroid
 from astroidfield import AsteroidField
@@ -43,6 +44,11 @@ def main():
             
         #update everything    
         updatable.update(dt)  # Update all updatable sprites
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
+                log_event("player_hit")
+                print("Game Over!")
+                sys.exit()
             
            
         # draw everything
